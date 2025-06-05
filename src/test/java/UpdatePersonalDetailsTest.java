@@ -3,10 +3,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdatePersonalDetailsTest {
-
+    // Sample person object used for calling methods
     Person person = new Person("dummyID", "01-01-1990");
-    
 
+    /**
+     * Test case: Update should fail when the old ID is not found in the file.
+     * This makes sure only existing users can be updated.
+     */
 @Test
 public void testUpdateFailsWhenOldIdNotFound() {
     boolean result = person.updatePersonalDetails(
@@ -18,6 +21,9 @@ public void testUpdateFailsWhenOldIdNotFound() {
 
     assertFalse(result);
 }
+    /**
+     * This should fail because minors are not allowed to change their address.
+     */
     @Test
     public void testUpdateAddressFailsForMinor() {
         person.addPerson("29!!kidBB", "200|Young Rd|Geelong|Victoria|Australia", "01-01-2010");
@@ -32,6 +38,10 @@ public void testUpdateFailsWhenOldIdNotFound() {
         assertFalse(result);
     }
 
+    /**
+     * Add a valid person to the file.
+     * This test checks if the person is added successfully.
+     */
 @Test
 public void testAddValidPersonOnly() {
     String personId = "23!!abcdXY";
@@ -43,8 +53,10 @@ public void testAddValidPersonOnly() {
     assertTrue(result, "合法人员应成功添加");
 }
 
-
-
+    /**
+     * Changing both the address and birthdate at the same time.
+     * This is not allowed and should fail.
+     */
     @Test
     public void testChangeBirthdateAndAddressShouldFail() {
         person.addPerson("88&&badDD", "400|Elm St|Bendigo|Victoria|Australia", "01-01-1992");
@@ -59,6 +71,11 @@ public void testAddValidPersonOnly() {
         assertFalse(result);
     }
 
+    /**
+     * Trying to change the ID when it starts with an even digit.
+     * System rules say you can't change the ID if it starts with an even number.
+     * So this test should fail
+     */
     @Test
     public void testChangeIDWhenStartsWithEvenDigitShouldFail() {
         person.addPerson("24@@idEE", "500|Main St|Shepparton|Victoria|Australia", "01-01-1990");
